@@ -9,8 +9,15 @@ view: invoices_e2e {
   }
 
   dimension: type {
+    label: "Entity"
     type: string
     sql: ${TABLE}.type_ ;;
+  }
+
+  dimension: mention_text {
+    label: "Entity Value"
+    type: string
+    sql: ${TABLE}.mention_text ;;
   }
 
   dimension: confidence {
@@ -29,10 +36,6 @@ view: invoices_e2e {
     sql: ${confidence} ;;
   }
 
-  dimension: mention_text {
-    type: string
-    sql: ${TABLE}.mention_text ;;
-  }
 
   measure: count {
     type: count
