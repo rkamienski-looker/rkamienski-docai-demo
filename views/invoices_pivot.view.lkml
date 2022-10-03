@@ -36,11 +36,38 @@ view: invoices_pivot {
     sql: ${TABLE}.doc_count ;;
   }
 
-
   dimension: invoice_date {
+    label: "Invoice Date"
     type: string
     sql: ${TABLE}.invoice_date ;;
   }
+
+  dimension: invoice_month {
+    label: "Invoice Month"
+    type: number
+    sql:
+    CASE  WHEN ${invoice_date} LIKE '%Jun%' THEN 6
+          WHEN ${invoice_date} LIKE '%Jul%' THEN 7
+          WHEN ${invoice_date} LIKE '%Aug%' THEN 8
+          WHEN ${invoice_date} LIKE '%Sep%' THEN 9
+          WHEN ${invoice_date} LIKE '%Oct%' THEN 10
+          WHEN ${invoice_date} LIKE '%Nov%' THEN 11
+          WHEN ${invoice_date} LIKE '%Dec%' THEN 12
+          WHEN ${invoice_date} LIKE '%Jan%' THEN 1
+          WHEN ${invoice_date} LIKE '%Feb%' THEN 2
+          WHEN ${invoice_date} LIKE '%Mar%' THEN 3
+          WHEN ${invoice_date} LIKE '%Apr%' THEN 4
+          WHEN ${invoice_date} LIKE '%May%' THEN 5
+    ELSE 0 END
+    ;;
+  }
+
+  # dimension_group: invoice {
+  #   hidden: yes
+  #   type: time
+  #   timeframes: [date, week, month]
+  #   sql: ${invoice_date} ;;
+  # }
 
   dimension: total_amount_raw {
     hidden: yes
@@ -52,6 +79,7 @@ view: invoices_pivot {
   measure: total_amount {
     type: sum
     sql: CAST(${total_amount_raw} AS FLOAT64) ;;
+    value_format_name: usd
   }
 
   set: detail {
