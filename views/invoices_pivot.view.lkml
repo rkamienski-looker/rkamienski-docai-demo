@@ -99,6 +99,21 @@ view: invoices_pivot {
     sql: TRIM(REPLACE(${TABLE}.total_amount, ',', ''));;
   }
 
+  dimension: supplier_name {
+    type: string
+    sql: ${TABLE}.supplier_name ;;
+  }
+
+  dimension: supplier_address {
+    type: string
+    sql: ${TABLE}.supplier_address;;
+  }
+
+  dimension: supplier_email {
+    type: string
+    sql: ${TABLE}.supplier_email ;;
+  }
+
   measure: total_amount {
     type: sum
     sql: CAST(${total_amount_raw} AS FLOAT64) ;;
