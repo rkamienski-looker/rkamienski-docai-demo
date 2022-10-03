@@ -5,7 +5,15 @@ view: invoices_pivot {
       COUNT(*) as doc_count,
       MAX( IF(type_ = 'invoice_id', mention_text, NULL) ) AS invoice_id,
       MAX( IF(type_ = 'invoice_date',mention_text, NULL) ) AS invoice_date,
-      MAX( IF(type_ = 'total_amount', mention_text, NULL) ) AS total_amount
+      MAX( IF(type_ = 'total_amount', mention_text, NULL) ) AS total_amount,
+      MAX( IF(type_ = 'line_item', mention_text, NULL) ) AS line_item,
+      MAX( IF(type_ = 'line_item/description', mention_text, NULL) ) AS line_item_description,
+
+      MAX( IF(type_ = 'supplier_name', mention_text, NULL) ) AS supplier_name,
+      MAX( IF(type_ = 'supplier_address', mention_text, NULL) ) AS supplier_address,
+      MAX( IF(type_ = 'supplier_email', mention_text, NULL) ) AS supplier_email,
+      MAX( IF(type_ = 'vat', mention_text, NULL) ) AS vat
+
       FROM `rkamienski-sandbox.docai_demo.invoices_e2e`
       GROUP BY 1
       ORDER BY 2 DESC
@@ -27,6 +35,16 @@ view: invoices_pivot {
   dimension: invoice_id {
     type: string
     sql: ${TABLE}.invoice_id ;;
+  }
+
+  dimension: line_item {
+    type: string
+    sql: ${TABLE}.line_item ;;
+  }
+
+  dimension: line_item_description  {
+    type: string
+    sql: ${TABLE}.line_item_description  ;;
   }
 
   dimension: doc_count {
