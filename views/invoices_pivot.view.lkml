@@ -29,7 +29,6 @@ view: invoices_pivot {
     sql: ${TABLE}.invoice_id ;;
   }
 
-
   dimension: doc_count {
     hidden: yes
     type: number
@@ -40,6 +39,12 @@ view: invoices_pivot {
     label: "Invoice Date"
     type: string
     sql: ${TABLE}.invoice_date ;;
+  }
+
+  dimension: invoice_year {
+    label: "Invoice Year"
+    type: number
+    sql: RIGHT(${invoice_date}, 4);;
   }
 
   dimension: invoice_month {
@@ -62,12 +67,12 @@ view: invoices_pivot {
     ;;
   }
 
-  # dimension_group: invoice {
-  #   hidden: yes
-  #   type: time
-  #   timeframes: [date, week, month]
-  #   sql: ${invoice_date} ;;
-  # }
+  dimension_group: invoice_date_ymd {
+    #hidden: yes
+    type: time
+    timeframes: [date, week, month]
+    sql: DATE(CAST(${invoice_year} AS INT64), ${invoice_month}, 1) ;;
+  }
 
   dimension: total_amount_raw {
     hidden: yes
