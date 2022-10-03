@@ -42,6 +42,14 @@ view: invoices_pivot {
     sql: ${TABLE}.line_item ;;
   }
 
+  dimension: line_item_category {
+    type: string
+    sql: CASE WHEN ${line_item} LIKE '%Storage%' THEN 'Storage'
+              WHEN ${line_item} LIKE '%Network%' THEN 'Networking'
+              ELSE 'Hardware' END
+    ;;
+  }
+
   dimension: line_item_description  {
     type: string
     sql: ${TABLE}.line_item_description  ;;
@@ -102,6 +110,12 @@ view: invoices_pivot {
   dimension: supplier_name {
     type: string
     sql: ${TABLE}.supplier_name ;;
+  }
+
+  dimension: supplier_category {
+    type: string
+    sql: CASE WHEN ${supplier_name} LIKE '%Technology%' THEN 'IT Products/Services'
+              ELSE 'Other' END;;
   }
 
   dimension: supplier_address {
