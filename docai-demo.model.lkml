@@ -20,5 +20,9 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # }
 
 explore: invoices_e2e {
+  label: "End-to-end Invoice Summary - Key Value Pairs"
+}
+
+explore: invoices_pivot {
   label: "End-to-end Invoice Summary"
 }

@@ -19,6 +19,7 @@ view: invoices_pivot {
   }
 
   dimension: id {
+    hidden: yes
     type: string
     sql: ${TABLE}.id ;;
   }
@@ -30,6 +31,7 @@ view: invoices_pivot {
 
 
   dimension: doc_count {
+    hidden: yes
     type: number
     sql: ${TABLE}.doc_count ;;
   }
@@ -40,9 +42,16 @@ view: invoices_pivot {
     sql: ${TABLE}.invoice_date ;;
   }
 
-  dimension: total_amount {
-    type: string
-    sql: ${TABLE}.total_amount ;;
+  dimension: total_amount_raw {
+    hidden: yes
+    type: number
+    #sql: ${TABLE}.total_amount ;;
+    sql: TRIM(REPLACE(${TABLE}.total_amount, ',', ''));;
+  }
+
+  measure: total_amount {
+    type: sum
+    sql: CAST(${total_amount_raw} AS FLOAT64) ;;
   }
 
   set: detail {
