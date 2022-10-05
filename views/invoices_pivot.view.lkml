@@ -35,7 +35,93 @@ view: invoices_pivot {
   dimension: invoice_id {
     type: string
     sql: ${TABLE}.invoice_id ;;
+
+    action: {
+      label: "Send this to Slack Channel"
+      url: "https://hooks.zapier.com/hooks/catch/1662138/tvc3zj/"
+      icon_url: "https://cdn.mos.cms.futurecdn.net/SDDw7CnuoUGax6x9mTo7dd.jpg"
+      param: {
+        name: "user_dash_link"
+        value: "/dashboards/ayalascustomerlookupdb?Email="
+      }
+      form_param: {
+        name: "Message"
+        type: textarea
+        default: "Hello,
+        Please check out our recent invoice: Invoice #{{value}}
+        from {{ supplier_name._value}}. It's been flagged.
+        Can you review for approval?
+        ~{{ _user_attributes.first_name}}"
+      }
+      form_param: {
+        name: "Recipient"
+        type: select
+        default: "zevl"
+        option: {
+          name: "zevl"
+          label: "Zev"
+        }
+        option: {
+          name: "slackdemo"
+          label: "Slack Demo User"
+        }
+      }
+      form_param: {
+        name: "Channel"
+        type: select
+        default: "cs"
+        option: {
+          name: "cs"
+          label: "Departmental Spend Approval"
+        }
+        option: {
+          name: "general"
+          label: "General"
+        }
+      }
+    }
+    action: {
+      label: "View Invoice/Supplier in PeopleSoft"
+      url: "https://hooks.zapier.com/hooks/catch/2813548/oosxkej/"
+      icon_url: "https://images.g2crowd.com/uploads/product/image/large_detail/large_detail_f11882acb21be8765a2d8a35e643478e/oracle-peoplesoft.png"
+      form_param: {
+        name: "Order ID"
+        type: string
+        default: "{{ invoice_id._value }}"
+      }
+
+      form_param: {
+        name: "Name"
+        type: string
+        default: "{{ users.name._value }}"
+      }
+
+      form_param: {
+        name: "Email"
+        type: string
+        default: "{{ _user_attributes.email }}"
+      }
+
+      form_param: {
+        name: "Item"
+        type: string
+        default: "{{ products.item_name._value }}"
+      }
+
+      form_param: {
+        name: "Price"
+        type: string
+        default: "{{ order_items.sale_price._rendered_value }}"
+      }
+
+      form_param: {
+        name: "Comments"
+        type: string
+        default: " Hi {{ users.first_name._value }}, thanks for your business!"
+      }
+    }
   }
+
 
   dimension: line_item {
     type: string
