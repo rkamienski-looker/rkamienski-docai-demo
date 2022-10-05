@@ -25,4 +25,5 @@ explore: invoices_e2e {
 
 explore: invoices_pivot {
   label: "End-to-end Invoice Summary"
+  sql_always_where: ${invoice_date} <> "Sep 24, 2019" ;;
 }
