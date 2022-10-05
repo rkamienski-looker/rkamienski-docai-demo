@@ -122,6 +122,7 @@ view: invoices_pivot {
   dimension: supplier_category {
     type: string
     sql: CASE WHEN ${supplier_name} LIKE '%Technology%' THEN 'IT Products/Services'
+              WHEN ${line_item} LIKE '%Storage%' THEN 'IT Products/Services'
               WHEN ${supplier_name} LIKE '%Home%' THEN 'Office Supplies'
               ELSE 'Other' END;;
   }
