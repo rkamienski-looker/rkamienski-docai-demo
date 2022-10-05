@@ -46,7 +46,11 @@ view: invoices_pivot {
     type: string
     sql: CASE WHEN ${line_item} LIKE '%Storage%' THEN 'Storage'
               WHEN ${line_item} LIKE '%Network%' THEN 'Networking'
-              ELSE 'Hardware' END
+              WHEN ${line_item} LIKE '%mouse%' THEN 'Hardware'
+              WHEN ${line_item} LIKE '%Books%' THEN 'Supplies'
+              WHEN ${line_item} LIKE '%monitor%' THEN 'Hardware'
+              WHEN ${line_item} LIKE '%case%' THEN 'Supplies'
+              ELSE 'Other' END
     ;;
   }
 
@@ -118,6 +122,7 @@ view: invoices_pivot {
   dimension: supplier_category {
     type: string
     sql: CASE WHEN ${supplier_name} LIKE '%Technology%' THEN 'IT Products/Services'
+              WHEN ${supplier_name} LIKE '%Home%' THEN 'Office Supplies'
               ELSE 'Other' END;;
   }
 
