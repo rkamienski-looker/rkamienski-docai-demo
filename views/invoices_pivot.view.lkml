@@ -64,7 +64,7 @@ view: invoices_pivot {
   dimension: invoice_date {
     label: "Invoice Date"
     type: string
-    sql: ${TABLE}.invoice_date ;;
+    sql: REPLACE(${TABLE}.invoice_date, "/", "-") ;;
   }
 
   dimension: invoice_year {
@@ -97,7 +97,10 @@ view: invoices_pivot {
     #hidden: yes
     type: time
     timeframes: [date, week, month]
-    sql: DATE(CAST(${invoice_year} AS INT64), ${invoice_month}, 1) ;;
+    sql: CASE WHEN ${invoice_month}=0 THEN DATE(PARSE_DATE("%m-%d-%Y", ${invoice_date}))
+              ELSE
+              DATE(CAST(${invoice_year} AS INT64), ${invoice_month}, 1)
+              END ;;
   }
 
   dimension: total_amount_raw {
