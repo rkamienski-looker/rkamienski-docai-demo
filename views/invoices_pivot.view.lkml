@@ -154,13 +154,14 @@ view: invoices_pivot {
   dimension: invoice_date {
     label: "Invoice Date"
     type: string
-    sql: REPLACE(${TABLE}.invoice_date, "/", "-") ;;
+    sql: TRIM(REPLACE(REPLACE(${TABLE}.invoice_date, "/", "-"), "2020,", "2020"));;
   }
 
   dimension: invoice_year {
     label: "Invoice Year"
     type: number
-    sql: RIGHT(${invoice_date}, 4);;
+    sql: CASE WHEN ${invoice_month}=0 THEN NULL
+              ELSE RIGHT(${invoice_date}, 4) END;;
   }
 
   dimension: invoice_month {
@@ -187,9 +188,9 @@ view: invoices_pivot {
     #hidden: yes
     type: time
     timeframes: [date, week, month]
-    sql: CASE WHEN ${invoice_month}=0 THEN DATE(PARSE_DATE("%m-%d-%Y", ${invoice_date}))
+    sql: CASE WHEN ${invoice_month} IS NULL THEN TIMESTAMP(DATE(PARSE_DATE("%m-%d-%Y", ${invoice_date})))
               ELSE
-              DATE(CAST(${invoice_year} AS INT64), ${invoice_month}, 1)
+              TIMESTAMP(DATE(CAST(${invoice_year} AS INT64), ${invoice_month}, 1))
               END ;;
   }
 

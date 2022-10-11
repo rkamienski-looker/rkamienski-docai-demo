@@ -26,5 +26,8 @@ explore: invoices_e2e {
 explore: invoices_pivot {
   label: "End-to-end Invoice Summary"
   #Filtering out bad data just for demo purposes...
-  sql_always_where: ${invoice_date} <> "Sep 24, 2019" AND ${invoice_id} <> "#6000000001" ;;
+  sql_always_where: ${invoice_date} <> "Sep 24, 2019"
+  --AND ${invoice_id} <> "#6000000001"
+  --AND ${invoice_id} <> "ATP072"
+  ;;
 }
